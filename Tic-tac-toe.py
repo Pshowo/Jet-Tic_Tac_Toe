@@ -10,16 +10,21 @@ def check_game(chars):
     column_1 = [chars[x][0] for x in range(3)]
     column_2 = [chars[x][1] for x in range(3)]
     column_3 = [chars[x][2] for x in range(3)]
-    print(column_1)
-    print(column_2)
-    print(column_3)
+
     sum_X = sum([chars[x].count("X") for x in range(0, 3)])
     sum_O = sum([chars[x].count("O") for x in range(0, 3)])
-
+ 
     # Impossible
     if abs(sum_X - sum_O) >= 2:
         print("Impossible")
-
+    elif column_1 == list("XXX") and column_2 == list("OOO"):
+        print("Impossible")
+    elif column_2 == list("XXX") and column_3 == list("OOO"):
+        print("Impossible")
+    elif column_1 == list("OOO") and column_2 == list("XXX"):
+        print("Impossible")
+    elif column_2 == list("OOO") and column_3 == list("XXX"):
+        print("Impossible")
 
     else:
     # win configuration
@@ -83,9 +88,9 @@ def matrix(x):
 
     return board
 
-while True:
-    word = input("Enter cells: ")
-    # word = "XO_XO_XOX"
-    matrix_board = matrix(word)
-    game_board(matrix_board)
-    check_game(matrix_board)
+# while True:
+word = input("Enter cells: ")
+# word = "XO_XO_XOX"
+matrix_board = matrix(word)
+game_board(matrix_board)
+check_game(matrix_board)
