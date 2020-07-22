@@ -1,3 +1,5 @@
+import re
+
 def game_board(x):
     print("---------")
     print(f"| {x[0][0]} {x[0][1]} {x[0][2]} |")
@@ -65,8 +67,6 @@ def check_game(chars):
             print("Draw")
 
 
-
-
 def matrix(x):
     board = []
     for i in range(4):
@@ -88,9 +88,59 @@ def matrix(x):
 
     return board
 
-# while True:
-word = input("Enter cells: ")
+def user_input():
+    global matrix_board
+    i = 0
+    while i < 3:
+        i += 1
+        xy = input("Enter the coordinates:")
+
+        out_range = re.search(r"[1-3] [1-3]", xy)
+        not_digit = re.search(r"[^\s,\d]", xy)
+        if not_digit is None:
+            if out_range is not None:
+                x, y = xy.split()
+                x = int(x)
+                y = int(y)
+                
+                if x == 1:
+                    x = 2 
+                elif x == 2:
+                    x = 1
+                elif x == 3:
+                    x = 0
+                
+                if y == 1:
+                    y = 0
+                elif y == 2:
+                    y = 1
+                elif y == 3:
+                    y = 2 
+                
+                if matrix_board[x][y] == 'X' or matrix_board[x][y] == 'O':
+                    print("This cell is occupied! Choose another one!")
+                else:
+                    matrix_board[x][y] = "X"
+                    return game_board(matrix_board)
+            else:
+                print("Coordinates should be from 1 to 3!")
+                continue
+        else:
+            print("You should enter numbers!")
+            continue
+
+
 # word = "XO_XO_XOX"
+word = input("Enter cells: ")
+
+# generate matrix board
 matrix_board = matrix(word)
+
+# print the game board
 game_board(matrix_board)
-check_game(matrix_board)
+
+# user input coordinates
+user_input()
+
+# check the game
+# check_game(matrix_board)
