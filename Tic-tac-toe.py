@@ -10,62 +10,57 @@ def game_board(x):
 
 
 def check_game(chars):
-    column_1 = [chars[x][0] for x in range(3)]
-    column_2 = [chars[x][1] for x in range(3)]
-    column_3 = [chars[x][2] for x in range(3)]
 
     sum_X = sum([chars[x].count("X") for x in range(0, 3)])
     sum_O = sum([chars[x].count("O") for x in range(0, 3)])
 
+    # add all a chars into the list in a specific order to check the columns [ [col1], [col2], [col3] ]
+    check_columns = [[chars[j][i] for j in range(3)] for i in range(3)]
+    
+    # list with columns wins
+    x_wins=[check_columns[x] for x in range(3) if check_columns[x] == list('XXX')]
+    o_wins=[check_columns[x] for x in range(3) if check_columns[x] == list('OOO')]
+
     # Impossible
-    if abs(sum_X - sum_O) >= 2:
-        print("Impossible")
-    elif column_1 == list("XXX") and column_2 == list("OOO"):
-        print("Impossible")
-    elif column_2 == list("XXX") and column_3 == list("OOO"):
-        print("Impossible")
-    elif column_1 == list("OOO") and column_2 == list("XXX"):
-        print("Impossible")
-    elif column_2 == list("OOO") and column_3 == list("XXX"):
-        print("Impossible")
-
-    else:
-        # win configuration
-        # X wins
-        if chars[0] == list("XXX") or chars[1] == list("XXX") or chars[2] == list("XXX"):
-            print("X wins")
-        elif chars[0][0] == "X" and chars[1][0] == "X" and chars[2][0] == "X":
-            print("X wins")
-        elif chars[0][1] == "X" and chars[1][1] == "X" and chars[2][1] == "X":
-            print("X wins")
-        elif chars[0][2] == "X" and chars[1][2] == "X" and chars[2][2] == "X":
-            print("X wins")
+    if abs(sum_X - sum_O) >= 2 or any(x_wins) == True and any(o_wins)== True:
+        print("Imposible")
+    else:  
+        # X win configuration
+        if any([chars[x] for x in range(3) if chars[x] == list('XXX')]):
+            print("X wins")  # X wins any rows
+            exit()
+        elif any(x_wins) == True:
+            print("X wins")  # X wins any columns
+            exit()
+        elif chars[2][0] == "X" and chars[1][1] == "X" and chars[0][2] == "X":
+            print("X wins")  # x wins cross (bottom left - top right)
+            exit()
         elif chars[0][0] == "X" and chars[1][1] == "X" and chars[2][2] == "X":
-            print("X wins")
-        elif chars[0][2] == "X" and chars[1][1] == "X" and chars[2][0] == "X":
-            print("X wins")
+            print("X wins")  # x wins cross (top left - bottom right)
+            exit()
 
-        # O wins
-        elif chars[0] == list('OOO') or chars[1] == list('OOO') or chars[2] == list('OOO'):
-            print("O wins")
-        elif chars[0][0] == "O" and chars[1][0] == "O" and chars[2][0] == "O":
-            print("O wins")
-        elif chars[0][1] == "O" and chars[1][1] == "O" and chars[2][1] == "O":
-            print("O wins")
-        elif chars[0][2] == "O" and chars[1][2] == "O" and chars[2][2] == "O":
-            print("O wins")
+        # O win configuration
+        elif any([chars[x] for x in range(3) if chars[x] == list('OOO')]): # O win configuration
+            print("O wins")  # O wins any row
+            exit()
+        elif any(o_wins)== True:
+            print("O wins")  # O wins any columns
+            exit()
+        elif chars[2][0] == "O" and chars[1][1] == "O" and chars[0][2] == "O":
+            print("O wins")  # O wins cross (bottom left - top right)
+            exit()
         elif chars[0][0] == "O" and chars[1][1] == "O" and chars[2][2] == "O":
-            print("O wins")
-        elif chars[0][2] == "O" and chars[1][1] == "O" and chars[2][0] == "O":
-            print("O wins")
+            print("O wins")  # O wins cross (top left - bottom right)
+            exit()
 
         # Game not finished
-        elif "_" in chars[0] or "_" in chars[1] or "_" in chars[2]:
+        elif " " in chars[0] or " " in chars[1] or " " in chars[2]:
             print("Game not finished")
 
         # Draw
-        elif "_" not in chars[0] and "_" not in chars[1] and "_" not in chars[2]:
+        elif " " not in chars[0] and " " not in chars[1] and " " not in chars[2]:
             print("Draw")
+            exit()
 
 
 def matrix(x):
@@ -92,6 +87,8 @@ def matrix(x):
 
 def user_input():
     global matrix_board
+    global gamer
+
     i = 0
     while i < 1:
         xy = input("Enter the coordinates:")
@@ -121,9 +118,13 @@ def user_input():
                 if matrix_board[x][y] == 'X' or matrix_board[x][y] == 'O':
                     print("This cell is occupied! Choose another one!")
                 else:
-                    matrix_board[x][y] = "X"
+                    matrix_board[x][y] = gamer
                     game_board(matrix_board)
                     i += 1
+                    if gamer == 'X':
+                        gamer = 'O'
+                    elif gamer == "O":
+                        gamer = 'X'
                     continue
             else:
                 print("Coordinates should be from 1 to 3!")
@@ -133,17 +134,21 @@ def user_input():
             continue
 
 
-
-word = input("Enter cells: ")
-
+# === GAME ===
+word = "         "
+gamer = 'X'
 # generate matrix board
 matrix_board = matrix(word)
 
-# print the game board
-game_board(matrix_board)
+while True:
+    # print the game board
+    game_board(matrix_board)
 
-# user input coordinates
-user_input()
+    # user input coordinates
+    user_input()
 
-# check the game
-# check_game(matrix_board)
+    # check the game
+    check_game(matrix_board)
+
+
+
