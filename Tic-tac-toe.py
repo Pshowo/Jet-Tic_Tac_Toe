@@ -2,6 +2,13 @@ import re
 
 
 def game_board(x):
+    """
+    Draws the board game on the console
+    """
+    for i in range(3):
+        for j in range(3):
+            if x[i][j] == "_":
+                x[i][j] = " "
     print("---------")
     print(f"| {x[0][0]} {x[0][1]} {x[0][2]} |")
     print(f"| {x[1][0]} {x[1][1]} {x[1][2]} |")
@@ -97,23 +104,9 @@ def user_input():
         not_digit = re.search(r"[^\s,\d]", xy)
         if not_digit is None:
             if out_range is not None:
-                y, x = xy.split()
-                x = int(x)
-                y = int(y)
-
-                if x == 1:
-                    x = 2
-                elif x == 2:
-                    x = 1
-                elif x == 3:
-                    x = 0
-
-                if y == 1:
-                    y = 0
-                elif y == 2:
-                    y = 1
-                elif y == 3:
-                    y = 2
+                x, y = xy.split()
+                x = int(x) - 1
+                y = int(y) - 1
 
                 if matrix_board[x][y] == 'X' or matrix_board[x][y] == 'O':
                     print("This cell is occupied! Choose another one!")
@@ -133,22 +126,32 @@ def user_input():
             print("You should enter numbers!")
             continue
 
-
+def check_gamer(word):
+    count_x = word.count("X")
+    count_o = word.count("O")
+    if count_x == count_o:
+        return "X"
+    elif count_x > count_o:
+        return "O"
+    else:
+        return "X"
+    
 # === GAME ===
-word = "         "
-gamer = 'X'
+
+# word = "_XXOO_OX_"
+word = input("Enter the cells:")
+gamer = check_gamer(word)
 # generate matrix board
 matrix_board = matrix(word)
 
-while True:
-    # print the game board
-    game_board(matrix_board)
+# print the game board
+game_board(matrix_board)
 
-    # user input coordinates
-    user_input()
+# user input coordinates
+user_input()
 
-    # check the game
-    check_game(matrix_board)
+# check the game
+check_game(matrix_board)
 
 
 
