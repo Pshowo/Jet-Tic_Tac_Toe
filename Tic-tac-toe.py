@@ -1,3 +1,4 @@
+import random
 import re
 
 
@@ -29,7 +30,7 @@ def check_game(chars):
     o_wins=[check_columns[x] for x in range(3) if check_columns[x] == list('OOO')]
 
     # Impossible
-    if abs(sum_X - sum_O) >= 2 or any(x_wins) == True and any(o_wins)== True:
+    if abs(sum_X - sum_O) >= 2 or any(x_wins) == True and any(o_wins) == True:
         print("Imposible")
     else:  
         # X win configuration
@@ -62,7 +63,8 @@ def check_game(chars):
 
         # Game not finished
         elif " " in chars[0] or " " in chars[1] or " " in chars[2]:
-            print("Game not finished")
+            # print("Game not finished")
+            return None
 
         # Draw
         elif " " not in chars[0] and " " not in chars[1] and " " not in chars[2]:
@@ -91,7 +93,6 @@ def matrix(x):
 
     return board
 
-
 def user_input():
     global matrix_board
     global gamer
@@ -114,10 +115,10 @@ def user_input():
                     matrix_board[x][y] = gamer
                     game_board(matrix_board)
                     i += 1
-                    if gamer == 'X':
-                        gamer = 'O'
-                    elif gamer == "O":
-                        gamer = 'X'
+                    # if gamer == 'X':
+                    #     gamer = 'O'
+                    # elif gamer == "O":
+                    #     gamer = 'X'
                     continue
             else:
                 print("Coordinates should be from 1 to 3!")
@@ -125,6 +126,23 @@ def user_input():
         else:
             print("You should enter numbers!")
             continue
+
+def easy_mode():
+    global matrix_board
+
+    i = 0
+    while i < 1:
+        x = random.randint(0, 2)
+        y = random.randint(0, 2)
+        if matrix_board[x][y] == 'X' or matrix_board[x][y] == 'O':
+            continue
+        else:
+            print(f"x: {x}\ty:{y}")
+            matrix_board[x][y] = "O"
+            print('Making move level "easy"')
+            game_board(matrix_board)
+            i += 1
+            break
 
 def check_gamer(word):
     count_x = word.count("X")
@@ -138,20 +156,22 @@ def check_gamer(word):
     
 # === GAME ===
 
-# word = "_XXOO_OX_"
-word = input("Enter the cells:")
-gamer = check_gamer(word)
+word = "_________"
+# gamer = check_gamer(word)
+gamer = "X"
 # generate matrix board
 matrix_board = matrix(word)
 
 # print the game board
 game_board(matrix_board)
+while True:
 
-# user input coordinates
-user_input()
-
-# check the game
-check_game(matrix_board)
+    # user input coordinates
+    user_input()
+    check_game(matrix_board)
+    easy_mode()
+    check_game(matrix_board)
+    # check the game
 
 
 
