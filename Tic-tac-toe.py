@@ -93,9 +93,9 @@ def matrix(x):
 
     return board
 
-def user_input():
+def user_input(mark):
     global matrix_board
-    global gamer
+    # global gamer
 
     i = 0
     while i < 1:
@@ -112,7 +112,7 @@ def user_input():
                 if matrix_board[x][y] == 'X' or matrix_board[x][y] == 'O':
                     print("This cell is occupied! Choose another one!")
                 else:
-                    matrix_board[x][y] = gamer
+                    matrix_board[x][y] = mark
                     game_board(matrix_board)
                     i += 1
                     # if gamer == 'X':
@@ -127,7 +127,7 @@ def user_input():
             print("You should enter numbers!")
             continue
 
-def easy_mode():
+def easy_mode(mark):
     global matrix_board
 
     i = 0
@@ -138,7 +138,7 @@ def easy_mode():
             continue
         else:
             print(f"x: {x}\ty:{y}")
-            matrix_board[x][y] = "O"
+            matrix_board[x][y] = mark
             print('Making move level "easy"')
             game_board(matrix_board)
             i += 1
@@ -153,25 +153,77 @@ def check_gamer(word):
         return "O"
     else:
         return "X"
-    
+
+class Player:
+
+    def __init__(self, type):
+        self.type = type
+
+    def __str__(self):
+        return f'Making move level "{self.type}"'
+
+
+def menu():
+    allow_options = ["user", "easy", "medium", "hard"]
+    command = input("Input command:")
+    if command == "exit":
+        exit()
+    elif command.startswith("start"):
+        try:
+            command = command.split(" ")
+            command.pop(0)
+            if len(command) > 1:
+                first_player = command[0]
+                second_player = command[1]
+            else:
+                print("Bad parameters!")
+                return None
+
+        except ValueError:
+            print("Bad parameters!")
+            return None
+
+        if first_player in allow_options and second_player in allow_options:
+            print(" First player is: {}, second player is: {}".format(first_player, second_player))
+            return first_player, second_player
+        else:
+            print("Bad parameters!")
+            return None
+    else:
+        print("Bad parameters!")
+        return None
+
 # === GAME ===
 
 word = "_________"
 # gamer = check_gamer(word)
 gamer = "X"
 # generate matrix board
-matrix_board = matrix(word)
 
 # print the game board
-game_board(matrix_board)
 while True:
-
-    # user input coordinates
-    user_input()
-    check_game(matrix_board)
-    easy_mode()
-    check_game(matrix_board)
-    # check the game
-
-
-
+    try:
+        first_player, second_player = menu()
+    except TypeError:
+        continue
+    else:
+        matrix_board = matrix(word)
+        game_board(matrix_board)
+        if first_player == "user" and second_player == "easy":
+            while True:
+                user_input("X")
+                check_game(matrix_board)
+                easy_mode("O")
+                check_game(matrix_board)
+        elif first_player == "easy" and second_player == "easy":
+            while True:
+                easy_mode("X")
+                check_game(matrix_board)
+                easy_mode("O")
+                check_game(matrix_board)
+        elif first_player == "easy" and second_player == "user":
+            while True:
+                easy_mode("X")
+                check_game(matrix_board)
+                user_input("O")
+                check_game(matrix_board)
