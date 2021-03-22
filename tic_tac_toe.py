@@ -93,6 +93,7 @@ def matrix(x):
 
     return board
 
+
 def user_input(mark):
     global matrix_board
     # global gamer
@@ -127,6 +128,7 @@ def user_input(mark):
             print("You should enter numbers!")
             continue
 
+
 def easy_mode(mark):
     global matrix_board
 
@@ -144,6 +146,7 @@ def easy_mode(mark):
             i += 1
             break
 
+
 def check_gamer(word):
     count_x = word.count("X")
     count_o = word.count("O")
@@ -153,6 +156,7 @@ def check_gamer(word):
         return "O"
     else:
         return "X"
+
 
 class Player:
 
@@ -193,37 +197,39 @@ def menu():
         print("Bad parameters!")
         return None
 
+
 # === GAME ===
+if __name__ == "__main__":
 
-word = "_________"
-# gamer = check_gamer(word)
-gamer = "X"
-# generate matrix board
+    word = "_________"
+    # gamer = check_gamer(word)
+    gamer = "X"
+    # generate matrix board
 
-# print the game board
-while True:
-    try:
-        first_player, second_player = menu()
-    except TypeError:
-        continue
-    else:
-        matrix_board = matrix(word)
-        game_board(matrix_board)
-        if first_player == "user" and second_player == "easy":
-            while True:
-                user_input("X")
-                check_game(matrix_board)
-                easy_mode("O")
-                check_game(matrix_board)
-        elif first_player == "easy" and second_player == "easy":
-            while True:
-                easy_mode("X")
-                check_game(matrix_board)
-                easy_mode("O")
-                check_game(matrix_board)
-        elif first_player == "easy" and second_player == "user":
-            while True:
-                easy_mode("X")
-                check_game(matrix_board)
-                user_input("O")
-                check_game(matrix_board)
+    # print the game board
+    while True:
+        try:
+            first_player, second_player = menu()
+        except TypeError:
+            continue
+        else:
+            matrix_board = matrix(word)
+            game_board(matrix_board)
+            if first_player == "user" and second_player == "easy":
+                while True:
+                    user_input("X")
+                    check_game(matrix_board)
+                    easy_mode("O")
+                    check_game(matrix_board)
+            elif first_player == "easy" and second_player == "easy":
+                while True:
+                    easy_mode("X")
+                    check_game(matrix_board)
+                    easy_mode("O")
+                    check_game(matrix_board)
+            elif first_player == "easy" and second_player == "user":
+                while True:
+                    easy_mode("X")
+                    check_game(matrix_board)
+                    user_input("O")
+                    check_game(matrix_board)
