@@ -18,3 +18,8 @@ The possible states are:
 EASY mode:
     - The user plays first as X
     - The computer makes its randomly move as O.
+
+MEDIUM mode:
+    - If it already has two in a row and can win with one further move, it does so.
+    - If its opponent can win with one move, it plays the move necessary to block this.
+    - Otherwise, it makes a random move (easy mode).    
