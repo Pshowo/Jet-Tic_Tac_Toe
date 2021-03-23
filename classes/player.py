@@ -28,7 +28,7 @@ class Player:
             grid list
 
         """
-        if grid[x][y] == " ": 
-            grid[x][y] = self.type
+        if grid[x][y] == "_": 
+            grid[x][y] = self.mark
         else:
             print("This cell is occupied")
