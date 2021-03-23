@@ -62,3 +62,58 @@ class Game:
         print(f"| {x[2][0]} {x[2][1]} {x[2][2]} |")
         print("---------")
         
+    def check(self, chars):
+        # counts how many chars appears in the list
+        sum_X = sum([chars[x].count("X") for x in range(0, 3)])
+        sum_O = sum([chars[x].count("O") for x in range(0, 3)])
+
+        # add all a chars into the list in a specific order to check the columns [ [col1], [col2], [col3] ]
+        check_columns = [[chars[j][i] for j in range(3)] for i in range(3)]
+
+        # list with columns wins
+        x_wins=[check_columns[x] for x in range(3) if check_columns[x] == list('XXX')]
+        o_wins=[check_columns[x] for x in range(3) if check_columns[x] == list('OOO')]
+
+        # Impossible
+        if abs(sum_X - sum_O) >= 2 or any(x_wins) == True and any(o_wins) == True:
+            print("Imposible")
+            return "Imposible"
+        else:
+            # X win configuration
+            if any([chars[x] for x in range(3) if chars[x] == list('XXX')]):
+                print("X wins")  # X wins any rows
+                return True
+            elif any(x_wins) == True:
+                print("X wins")  # X wins any columns
+                return True
+            elif chars[2][0] == "X" and chars[1][1] == "X" and chars[0][2] == "X":
+                print("X wins")  # x wins cross (bottom left - top right)
+                return True
+            elif chars[0][0] == "X" and chars[1][1] == "X" and chars[2][2] == "X":
+                print("X wins")  # x wins cross (top left - bottom right)
+                return True
+
+            # O win configuration
+            elif any([chars[x] for x in range(3) if chars[x] == list('OOO')]): # O win configuration
+                print("O wins")  # O wins any row
+                return True
+            elif any(o_wins)== True:
+                print("O wins")  # O wins any columns
+                return True
+            elif chars[2][0] == "O" and chars[1][1] == "O" and chars[0][2] == "O":
+                print("O wins")  # O wins cross (bottom left - top right)
+                return True
+            elif chars[0][0] == "O" and chars[1][1] == "O" and chars[2][2] == "O":
+                print("O wins")  # O wins cross (top left - bottom right)
+                return True
+
+            # Game not finished
+            elif "_" in chars[0] or "_" in chars[1] or "_" in chars[2]:
+                # print("Game not finished")
+                return False
+
+            # Draw
+            elif "_" not in chars[0] and "_" not in chars[1] and "_" not in chars[2]:
+                print("Draw")
+                return True
+        return False

@@ -11,11 +11,11 @@ def main():
     while True:
         # move first player
         # print grid
-        # check if someone 
+        # check if someone wins, if true exit
         
         # move second player
         # print grid
-        # check if someone wins
+        # check if someone wins, if true exit
         break
 
 if __name__ == "__main__":
