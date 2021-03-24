@@ -108,12 +108,12 @@ class Game:
                 return True
 
             # Game not finished
-            elif "_" in chars[0] or "_" in chars[1] or "_" in chars[2]:
+            elif " " in chars[0] or " " in chars[1] or " " in chars[2]:
                 # print("Game not finished")
                 return False
 
             # Draw
-            elif "_" not in chars[0] and "_" not in chars[1] and "_" not in chars[2]:
+            elif " " not in chars[0] and " " not in chars[1] and " " not in chars[2]:
                 print("Draw")
                 return True
         return False
