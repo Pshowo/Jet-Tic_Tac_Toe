@@ -1,4 +1,5 @@
 import re
+import random
 
 class Player:
     """ Represents player on the game. """
@@ -15,30 +16,24 @@ class Player:
         self.mark = tup[1]
 
     def __str__(self):
-        return f'Making move level "{self.type}"'
+        if self.type != "user":
+            return f'Making move level "{self.type}"'
+        else:
+            return ""
 
-    def make_move(self, coord, grid):
-        """Insterts a mark into an empty cell. 
+    def user_input(self, grid):
+        """Menu to insert the coodrinates by user.
 
         Parameters
         ----------
-        x : int
-            x coordinates, start with 1
-        y : int
-            y coordinates, start with 1
         grid : list
-            grid list
+            Main sequences of grid.
 
+        Returns
+        -------
+        tuple int
+            A tuple with coordinates where the mark will be insert (X, Y)
         """
-        
-        if grid[coord[0]][coord[1]] == "_": 
-            grid[coord[0]][coord[1]] = self.mark
-        else:
-            print("This cell is occupied")
-
-class User(Player):
-
-    def user_input(self, grid):
         i = 0
         while i < 1:
             xy = input("Enter the coordinates:")
@@ -54,7 +49,7 @@ class User(Player):
                     if grid[x][y] == 'X' or grid[x][y] == 'O':
                         print("This cell is occupied! Choose another one!")
                     else:
-                        grid[x][y] = self.mark
+                        # grid[x][y] = self.mark
                         i += 1
                         return (x, y)
                 else:
@@ -63,3 +58,51 @@ class User(Player):
             else:
                 print("You should enter numbers!")
                 continue
+
+    def easy_mode(self, grid):
+        """
+        Inserts into the random cell the mark. If the cell is occupied, tries again.
+
+        Parameters
+        ----------
+        mark : str
+            The mark which use in the game.
+
+        Returns
+        -------
+
+        """
+        i = 0
+        while i < 1:
+            x = random.randint(0, 2)
+            y = random.randint(0, 2)
+            if grid[x][y] == 'X' or grid[x][y] == 'O':
+                continue
+            else:
+                # print('Making move level "{}"'.format(self.mode))
+                i += 1
+                return (x, y)
+        return grid
+
+    def make_move(self, grid):
+        """Insterts a mark into an empty cell. 
+
+        Parameters
+        ----------
+        x : int
+            x coordinates, start with 1
+        y : int
+            y coordinates, start with 1
+        grid : list
+            grid list
+
+        """
+        if self.type == "user":
+            coord = self.user_input(grid)
+        elif self.type == "easy":
+            coord = self.easy_mode(grid)
+
+        if grid[coord[0]][coord[1]] == " ": 
+            grid[coord[0]][coord[1]] = self.mark
+        else:
+            print("This cell is occupied")
