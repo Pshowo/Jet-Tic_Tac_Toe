@@ -1,5 +1,5 @@
 from classes.game import Game
-from classes.player import Player, User
+from classes.player import Player
 
 def main():
     game = Game()
